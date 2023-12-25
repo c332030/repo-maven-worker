@@ -18,27 +18,14 @@ function getPath(url) {
 export default {
   async fetch(request, env, ctx) {
 
-    if (request.method !== "GET") {
-      return new Response(`Method ${request.method} not allowed.`, {
-        status: 405,
-        headers: {
-          Allow: "GET",
-        },
-      })
-    }
-
-    console.debug('url', request.url)
-
     const path = getPath(request.url)
-    console.debug('path', path)
 
     for (const repo of repos) {
 
       const newUrl = `${repo}${path}`
-      console.debug('newUrl', newUrl)
-
-      const response = await fetch(newUrl)
-      console.debug('response', response)
+      const response = await fetch(newUrl, {
+        method: request.method
+      })
 
       console.debug('response.ok', response.ok)
       if(response.ok) {
