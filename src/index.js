@@ -3,7 +3,7 @@ const repos = [
   'https://repo1.maven.org/maven2',
   'https://oss.sonatype.org/service/local/repositories/releases/content',
 
-  'https://plugins.gradle.org/m2/',
+  'https://plugins.gradle.org/m2',
 
 ]
 
