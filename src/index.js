@@ -1,6 +1,7 @@
 
 const repos = [
   'https://repo1.maven.org/maven2',
+  'https://oss.sonatype.org/service/local/repositories/releases/content',
 ]
 
 const urlPrefix = '://'
