@@ -1,15 +1,53 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+
+const repos = [
+  'https://repo1.maven.org/maven2',
+]
+
+const urlPrefix = '://'
+
+function getPath(url) {
+
+  const url2 = url.substring(url.indexOf(urlPrefix) + urlPrefix.length)
+  return url2.substring(url2.indexOf('/'))
+}
 
 export default {
-	async fetch(request, env, ctx) {
-		return new Response('Hello World!');
-	},
+  async fetch(request, env, ctx) {
+
+    if (request.method !== "GET") {
+      return new Response(`Method ${request.method} not allowed.`, {
+        status: 405,
+        headers: {
+          Allow: "GET",
+        },
+      })
+    }
+
+    console.debug('url', request.url)
+
+    const path = getPath(request.url)
+    console.debug('path', path)
+
+    for (const repo of repos) {
+
+      const newUrl = `${repo}${path}`
+      console.debug('newUrl', newUrl)
+
+      const response = await fetch(newUrl)
+      console.debug('response', response)
+
+      console.debug('response.ok', response.ok)
+      if(response.ok) {
+        return response
+      }
+
+    }
+
+    return new Response(`Resource ${path} not found.`, {
+      status: 404,
+      headers: {
+        Allow: "GET",
+      },
+    })
+  }
 };
