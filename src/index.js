@@ -36,9 +36,6 @@ export default {
 
     return new Response(`Resource ${path} not found.`, {
       status: 404,
-      headers: {
-        Allow: "GET",
-      },
     })
   }
 };
