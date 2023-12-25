@@ -2,6 +2,11 @@ name = "maven"
 main = "src/index.js"
 compatibility_date = "2023-12-18"
 
+workers_dev = true
+routes = [
+    { pattern = "maven.c332030.com", zone_name = "c332030.com" },
+]
+
 # Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
 # Note: Use secrets to store sensitive data.
 # Docs: https://developers.cloudflare.com/workers/platform/environment-variables
