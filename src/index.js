@@ -41,7 +41,13 @@ export default {
       const ok = response.ok
       console.debug('ok', ok)
       if(ok) {
-        return response
+        return new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.assign({
+            repo: repo
+          }, response.headers),
+        })
       }
 
       failResponses.push(response)
