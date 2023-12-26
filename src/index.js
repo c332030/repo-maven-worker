@@ -17,6 +17,10 @@ function getPath(url) {
   return url2.substring(url2.indexOf('/'))
 }
 
+function assign(obj1, obj2) {
+  return Object.assign({}, obj1, obj2)
+}
+
 export default {
   async fetch(request, env, ctx) {
 
@@ -44,9 +48,9 @@ export default {
         return new Response(response.body, {
           status: response.status,
           statusText: response.statusText,
-          headers: Object.assign({
+          headers: assign(response.headers, {
             repo: repo
-          }, response.headers),
+          }),
         })
       }
 
