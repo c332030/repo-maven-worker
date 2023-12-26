@@ -1,9 +1,11 @@
 
 const repos = [
+
   'https://repo1.maven.org/maven2',
-  'https://oss.sonatype.org/service/local/repositories/releases/content',
 
   'https://plugins.gradle.org/m2',
+
+  'https://oss.sonatype.org/service/local/repositories/releases/content',
 
 ]
 
@@ -23,12 +25,21 @@ export default {
     for (const repo of repos) {
 
       const newUrl = `${repo}${path}`
-      const response = await fetch(newUrl, {
-        method: request.method
-      })
+      console.debug('newUrl', newUrl)
 
-      console.debug('response.ok', response.ok)
-      if(response.ok) {
+      const headers = request.headers
+      console.debug('headers', headers)
+
+      const response = await fetch(newUrl, {
+        method: request.method,
+        redirect: 'follow',
+        headers: headers,
+      })
+      console.debug('response', response)
+
+      const ok = response.ok
+      console.debug('ok', ok)
+      if(ok) {
         return response
       }
 
