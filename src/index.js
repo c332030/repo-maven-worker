@@ -22,7 +22,7 @@ export default {
 
     const path = getPath(request.url)
 
-    let failResponse
+    const failResponses = []
     for (const repo of repos) {
 
       const newUrl = `${repo}${path}`
@@ -44,12 +44,10 @@ export default {
         return response
       }
 
-      if (!failResponse) {
-        failResponse = request
-      }
+      failResponses.push(response)
 
     }
 
-    return failResponse
+    return failResponses[0]
   }
 };
