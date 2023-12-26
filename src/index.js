@@ -22,6 +22,7 @@ export default {
 
     const path = getPath(request.url)
 
+    let failResponse
     for (const repo of repos) {
 
       const newUrl = `${repo}${path}`
@@ -43,10 +44,12 @@ export default {
         return response
       }
 
+      if (!failResponse) {
+        failResponse = request
+      }
+
     }
 
-    return new Response(`Resource ${path} not found.`, {
-      status: 404,
-    })
+    return failResponse
   }
 };
