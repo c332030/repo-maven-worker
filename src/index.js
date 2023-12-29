@@ -49,7 +49,8 @@ export default {
           status: response.status,
           statusText: response.statusText,
           headers: assign(response.headers, {
-            repo: response.url
+            'c-repo': repo,
+            'c-url': response.url,
           }),
         })
       }
