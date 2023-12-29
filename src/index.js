@@ -27,37 +27,37 @@ export default {
     const path = getPath(request.url)
 
     const failResponses = []
-    for (const repo of repos) {
+
+    const headers = request.headers
+    console.debug('headers', headers)
+
+    const fetchList = repos.map(repo => {
 
       const newUrl = `${repo}${path}`
       console.debug('newUrl', newUrl)
 
-      const headers = request.headers
-      console.debug('headers', headers)
-
-      const response = await fetch(newUrl, {
+      return fetch(newUrl, {
         method: request.method,
         redirect: 'follow',
         headers: headers,
       })
-      console.debug('response', response)
+    })
 
-      const ok = response.ok
-      console.debug('ok', ok)
-      if(ok) {
-        return new Response(response.body, {
-          status: response.status,
-          statusText: response.statusText,
-          headers: assign(response.headers, {
-            repo: repo
-          }),
-        })
-      }
+    const response = await Promise.any(fetchList)
+    console.debug('response', response)
 
-      failResponses.push(response)
-
+    const ok = response.ok
+    console.debug('ok', ok)
+    if(ok) {
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: assign(response.headers, {
+          repo: response.url
+        }),
+      })
     }
 
-    return failResponses[0]
+    return response
   }
 };
