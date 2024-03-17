@@ -34,28 +34,34 @@ export default {
     for (const repo of repos) {
 
       const newUrl = `${repo}${path}`
-      // console.debug('newUrl', newUrl)
+      console.debug('newUrl', newUrl)
 
       const headers = request.headers
-      // console.debug('headers', headers)
+      console.debug('headers', headers)
 
       const response = await fetch(newUrl, {
         method: request.method,
         redirect: 'follow',
         headers: headers,
       })
-      // console.debug('response', response)
+      console.debug('response', response)
 
       const ok = response.ok
-      // console.debug('ok', ok)
+      console.debug('ok', ok)
       if(ok) {
+        const headers = {
+          'c-repo': repo,
+          'c-url': response.url,
+        }
+
+        for (const pair of response.headers.entries()) {
+          headers[pair[0]] = pair[1]
+        }
+
         return new Response(response.body, {
           status: response.status,
           statusText: response.statusText,
-          headers: assign(response.headers, {
-            'c-repo': repo,
-            'c-url': response.url,
-          }),
+          headers: headers
         })
       }
 
